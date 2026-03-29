@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Host Dashboard</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1 { text-align: center; }
+        .container { max-width: 600px; margin: auto; border: 1px solid #ccc; padding: 20px; border-radius: 10px; }
+        .session-code, .current-question, .player-list { margin: 20px 0; }
+        button { padding: 10px 15px; font-size: 16px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Host Dashboard</h1>
+        <div class="session-code">
+            <strong>Session Code:</strong> <span id="session-code">[SESSION_CODE]</span>
+        </div>
+        <div class="current-question">
+            <strong>Current Question:</strong>
+            <p id="current-question">[CURRENT_QUESTION]</p>
+        </div>
+        <div class="player-list">
+            <strong>Players:</strong>
+            <ul id="player-list">
+                <li>Player 1</li>
+                <li>Player 2</li>
+                <li>Player 3</li>
+            </ul>
+        </div>
+        <button id="next-question-btn">Next Question</button>
+    </div>
+</body>
+</html>
