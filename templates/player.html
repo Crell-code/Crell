@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Player</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+</head>
+<body>
+    <div>
+        <h1>Join Quiz</h1>
+        <input type="text" id="sessionCode" placeholder="Enter Session Code">
+        <button id="joinQuiz">Join Quiz</button>
+    </div>
+    <div id="quizSection" style="display:none;">
+        <h2 id="question"></h2>
+        <div id="options"></div>
+        <h3>Score: <span id="score">0</span></h3>
+        <h3>Leaderboard</h3>
+        <ul id="leaderboard"></ul>
+    </div>
+    
+    <script>
+        const socket = io.connect('http://your-socket-server-url');
+
+        $(document).ready(function() {
+            $('#joinQuiz').click(function() {
+                const sessionCode = $('#sessionCode').val();
+                socket.emit('join', { sessionCode: sessionCode });
+            });
+
+            socket.on('newQuestion', function(question) {
+                $('#question').text(question.text);
+                $('#options').empty();
+                question.options.forEach(option => {
+                    $('#options').append(`<button class=\"option\">${option}</button>`);
+                });
+                $('#quizSection').show();
+            });
+
+            $(document).on('click', '.option', function() {
+                const selectedOption = $(this).text();
+                socket.emit('answer', { answer: selectedOption });
+            });
+
+            socket.on('updateScore', function(score) {
+                $('#score').text(score);
+            });
+
+            socket.on('updateLeaderboard', function(leaderboard) {
+                $('#leaderboard').empty();
+                leaderboard.forEach(player => {
+                    $('#leaderboard').append(`<li>${player.name}: ${player.score}</li>`);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
